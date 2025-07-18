@@ -65,7 +65,7 @@ The system is pre-seeded with test users:
 - **Frontend Shell**: http://localhost:3000
 - **Support Tickets**: http://localhost:3002
 - **API**: http://localhost:3001
-- **n8n Dashboard**: http://localhost:5678 (admin/password)
+- **n8n Dashboard**: http://localhost:5678 
 - **MongoDB**: localhost:27017
 
 ## 🎯 Core Features
