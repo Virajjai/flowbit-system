@@ -1,0 +1,301 @@
+{
+  "name": "Ticket Processing Workflow",
+  "active": true,
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "ticket-processing",
+        "responseMode": "responseNode",
+        "options": {}
+      },
+      "name": "Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [
+        240,
+        300
+      ],
+      "webhookId": "ticket-processing-webhook",
+      "id": "webhook-1"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "ticketId",
+              "value": "={{$json.ticketId}}"
+            },
+            {
+              "name": "customerId", 
+              "value": "={{$json.customerId}}"
+            },
+            {
+              "name": "title",
+              "value": "={{$json.title}}"
+            },
+            {
+              "name": "priority",
+              "value": "={{$json.priority}}"
+            },
+            {
+              "name": "status",
+              "value": "Processing"
+            }
+          ]
+        }
+      },
+      "name": "Set Processing Status",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        460,
+        300
+      ],
+      "id": "set-1"
+    },
+    {
+      "parameters": {
+        "amount": 3,
+        "unit": "seconds"
+      },
+      "name": "Wait",
+      "type": "n8n-nodes-base.wait",
+      "typeVersion": 1,
+      "position": [
+        680,
+        300
+      ],
+      "id": "wait-1"
+    },
+    {
+      "parameters": {
+        "conditions": {
+          "string": [
+            {
+              "value1": "={{$json.priority}}",
+              "operation": "equal",
+              "value2": "Critical"
+            }
+          ]
+        }
+      },
+      "name": "Check Priority",
+      "type": "n8n-nodes-base.if",
+      "typeVersion": 1,
+      "position": [
+        900,
+        300
+      ],
+      "id": "if-1"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "status",
+              "value": "Escalated"
+            },
+            {
+              "name": "message",
+              "value": "Critical ticket escalated to admin"
+            }
+          ]
+        }
+      },
+      "name": "Escalate Critical",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        200
+      ],
+      "id": "set-2"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "status",
+              "value": "Resolved"
+            },
+            {
+              "name": "message",
+              "value": "Ticket processed successfully"
+            }
+          ]
+        }
+      },
+      "name": "Mark Resolved",
+      "type": "n8n-nodes-base.set",
+      "typeVersion": 1,
+      "position": [
+        1120,
+        400
+      ],
+      "id": "set-3"
+    },
+    {
+      "parameters": {
+        "url": "={{$json.webhookUrl}}",
+        "sendHeaders": true,
+        "headerParameters": {
+          "parameters": [
+            {
+              "name": "x-n8n-webhook-secret",
+              "value": "n8n-webhook-secret-key"
+            }
+          ]
+        },
+        "sendBody": true,
+        "bodyParameters": {
+          "parameters": [
+            {
+              "name": "ticketId",
+              "value": "={{$('Set Processing Status').item.json.ticketId}}"
+            },
+            {
+              "name": "customerId",
+              "value": "={{$('Set Processing Status').item.json.customerId}}"
+            },
+            {
+              "name": "status",
+              "value": "={{$json.status}}"
+            },
+            {
+              "name": "workflowId",
+              "value": "={{$workflow.id}}"
+            }
+          ]
+        }
+      },
+      "name": "Send Webhook",
+      "type": "n8n-nodes-base.httpRequest",
+      "typeVersion": 1,
+      "position": [
+        1340,
+        300
+      ],
+      "id": "http-1"
+    },
+    {
+      "parameters": {
+        "values": {
+          "string": [
+            {
+              "name": "success",
+              "value": "true"
+            },
+            {
+              "name": "executionId",
+              "value": "={{$workflow.executionId}}"
+            }
+          ]
+        }
+      },
+      "name": "Response",
+      "type": "n8n-nodes-base.respondToWebhook",
+      "typeVersion": 1,
+      "position": [
+        1560,
+        300
+      ],
+      "id": "response-1"
+    }
+  ],
+  "connections": {
+    "Webhook": {
+      "main": [
+        [
+          {
+            "node": "Set Processing Status",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Set Processing Status": {
+      "main": [
+        [
+          {
+            "node": "Wait",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Wait": {
+      "main": [
+        [
+          {
+            "node": "Check Priority",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Check Priority": {
+      "main": [
+        [
+          {
+            "node": "Escalate Critical",
+            "type": "main",
+            "index": 0
+          }
+        ],
+        [
+          {
+            "node": "Mark Resolved",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Escalate Critical": {
+      "main": [
+        [
+          {
+            "node": "Send Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Mark Resolved": {
+      "main": [
+        [
+          {
+            "node": "Send Webhook",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    },
+    "Send Webhook": {
+      "main": [
+        [
+          {
+            "node": "Response",
+            "type": "main",
+            "index": 0
+          }
+        ]
+      ]
+    }
+  },
+  "createdAt": "2025-01-17T17:00:00.000Z",
+  "updatedAt": "2025-01-17T17:00:00.000Z",
+  "settings": {},
+  "staticData": null,
+  "id": "ticket-processing-workflow",
+  "versionId": "1"
+}

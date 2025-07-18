@@ -1,0 +1,50 @@
+{
+  "tenants": {
+    "logistics-co": {
+      "name": "LogisticsCo",
+      "screens": [
+        {
+          "id": "support-tickets",
+          "name": "Support Tickets",
+          "url": "http://localhost:3002/remoteEntry.js",
+          "scope": "supportTicketsApp",
+          "module": "./SupportTicketsApp",
+          "route": "/tickets",
+          "icon": "ticket"
+        },
+        {
+          "id": "dashboard",
+          "name": "Dashboard",
+          "url": "http://localhost:3002/remoteEntry.js",
+          "scope": "supportTicketsApp",
+          "module": "./Dashboard",
+          "route": "/dashboard",
+          "icon": "dashboard"
+        }
+      ]
+    },
+    "retail-gmbh": {
+      "name": "RetailGmbH",
+      "screens": [
+        {
+          "id": "support-tickets",
+          "name": "Support Tickets",
+          "url": "http://localhost:3002/remoteEntry.js",
+          "scope": "supportTicketsApp",
+          "module": "./SupportTicketsApp",
+          "route": "/tickets",
+          "icon": "ticket"
+        },
+        {
+          "id": "analytics",
+          "name": "Analytics",
+          "url": "http://localhost:3002/remoteEntry.js",
+          "scope": "supportTicketsApp",
+          "module": "./Analytics",
+          "route": "/analytics",
+          "icon": "chart"
+        }
+      ]
+    }
+  }
+}
