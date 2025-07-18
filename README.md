@@ -171,24 +171,6 @@ N8N_BASE_URL=http://localhost:5678
 REACT_APP_API_URL=http://localhost:3001
 ```
 
-## 🎨 Features
-
-### ✨ Audit Logging
-- Comprehensive audit trail for all actions
-- Tracks user, tenant, timestamp, and details
-- Admin dashboard shows recent activity
-- Filterable audit logs
-
-### ✨ Real-time Updates
-- WebSocket integration for live updates
-- Ticket status changes broadcast to UI
-- Tenant-specific channels for isolation
-
-### ✨ Responsive Design
-- Mobile-friendly interface
-- Styled-components for theming
-- Professional UI with LogisticsCo/RetailGmbH branding
-
 ## 🛡️ Security Features
 
 - **JWT Authentication**: Secure token-based auth
@@ -206,10 +188,6 @@ REACT_APP_API_URL=http://localhost:3001
 - MongoDB query logs
 - Real-time WebSocket events
 
-### Health Checks
-- API health endpoint: `/health`
-- MongoDB connection status
-- n8n workflow status
 
 ## 📋 Known Limitations
 
