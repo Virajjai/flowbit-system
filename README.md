@@ -133,15 +133,6 @@ The system includes comprehensive Jest tests that verify:
 5. Login as RetailGmbH admin
 6. Verify you cannot see LogisticsCo data
 
-## 📊 Demo Video Checklist
-
-Your demo should show:
-1. **Login** as both tenant admins
-2. **Create tickets** in each tenant
-3. **Workflow execution** in n8n dashboard
-4. **Status updates** reflected in UI
-5. **Tenant isolation** - prove LogisticsCo admin cannot see RetailGmbH data
-
 ## 🔧 Development
 
 ### Local Development (Without Docker)
@@ -180,7 +171,7 @@ N8N_BASE_URL=http://localhost:5678
 REACT_APP_API_URL=http://localhost:3001
 ```
 
-## 🎨 Bonus Features
+## 🎨 Features
 
 ### ✨ Audit Logging
 - Comprehensive audit trail for all actions
